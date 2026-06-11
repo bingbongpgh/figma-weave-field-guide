@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figma Weave · Image Model Field Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0e0e10;
+    --surface: #18181c;
+    --border: #2a2a30;
+    --border-light: #38383f;
+    --text: #e8e8ec;
+    --muted: #7a7a88;
+    --accent-gen: #4a9eff;
+    --accent-edit: #a78bfa;
+    --accent-vector: #34d399;
+    --accent-upscale: #fb923c;
+    --accent-3d: #f472b6;
+    --accent-specialist: #facc15;
+    --pill-gen: rgba(74,158,255,0.12);
+    --pill-edit: rgba(167,139,250,0.12);
+    --pill-vector: rgba(52,211,153,0.12);
+    --pill-upscale: rgba(251,146,60,0.12);
+    --pill-3d: rgba(244,114,182,0.12);
+    --pill-specialist: rgba(250,204,21,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    padding: 48px 32px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 56px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .intro {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .toc a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .toc a:hover { opacity: 0.7; }
+  .toc a.gen { background: var(--pill-gen); color: var(--accent-gen); border: 1px solid rgba(74,158,255,0.25); }
+  .toc a.edit { background: var(--pill-edit); color: var(--accent-edit); border: 1px solid rgba(167,139,250,0.25); }
+  .toc a.vector { background: var(--pill-vector); color: var(--accent-vector); border: 1px solid rgba(52,211,153,0.25); }
+  .toc a.upscale { background: var(--pill-upscale); color: var(--accent-upscale); border: 1px solid rgba(251,146,60,0.25); }
+  .toc a.threed { background: var(--pill-3d); color: var(--accent-3d); border: 1px solid rgba(244,114,182,0.25); }
+  .toc a.specialist { background: var(--pill-specialist); color: var(--accent-specialist); border: 1px solid rgba(250,204,21,0.25); }
+
+  section {
+    margin-bottom: 52px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .gen-tag { background: var(--pill-gen); color: var(--accent-gen); }
+  .edit-tag { background: var(--pill-edit); color: var(--accent-edit); }
+  .vector-tag { background: var(--pill-vector); color: var(--accent-vector); }
+  .upscale-tag { background: var(--pill-upscale); color: var(--accent-upscale); }
+  .threed-tag { background: var(--pill-3d); color: var(--accent-3d); }
+  .specialist-tag { background: var(--pill-specialist); color: var(--accent-specialist); }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    max-width: 680px;
+  }
+
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .model-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: border-color 0.15s;
+  }
+  .model-card:hover { border-color: var(--border-light); }
+
+  .model-card .name {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .model-card .name .logo {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.06);
+    padding: 1px;
+  }
+
+  .badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 400;
+  }
+  .badge-fast { background: rgba(52,211,153,0.15); color: #34d399; }
+  .badge-best { background: rgba(250,204,21,0.15); color: #facc15; }
+  .badge-new { background: rgba(74,158,255,0.15); color: #4a9eff; }
+  .badge-free { background: rgba(167,139,250,0.15); color: #a78bfa; }
+
+  .model-card .desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .model-card .when {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.85;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .model-card .when strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .model-card .when strong:not(:first-of-type) {
+    margin-top: 10px;
+  }
+
+  .cheat-sheet {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 52px;
+  }
+
+  .cheat-sheet h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  .cheat-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px 24px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .cheat-row:last-child { border-bottom: none; }
+
+  .cheat-row .task {
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+  }
+
+  .cheat-row .answer {
+    color: var(--text);
+  }
+
+  .cheat-row .answer code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: rgba(255,255,255,0.07);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #fff;
+  }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .search-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(to bottom, var(--bg) 80%, rgba(14,14,16,0));
+    padding: 16px 0 20px;
+    margin: -16px 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-field {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    width: 14px;
+    height: 14px;
+    color: var(--muted);
+    pointer-events: none;
+    transition: color 0.15s;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px 10px 34px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--accent-gen); }
+  .search-input:focus + .search-icon,
+  .search-field:focus-within .search-icon { color: var(--accent-gen); }
+
+  .search-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: right;
+  }
+
+  .empty-state {
+    display: none;
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .empty-state.is-visible { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Figma Weave · Reference Guide</p>
+  <h1>Image Model<br><em>Field Guide</em></h1>
+  <p class="intro">A practical guide to every model available in Figma Weave — what each one does, when to reach for it, and how designers actually think about the landscape.</p>
+  <nav class="toc">
+    <a href="#generation" class="gen">Text-to-Image Generation</a>
+    <a href="#editing" class="edit">Image Editing &amp; Compositing</a>
+    <a href="#vector" class="vector">Vector &amp; SVG</a>
+    <a href="#upscale" class="upscale">Upscaling &amp; Enhancement</a>
+    <a href="#3d" class="threed">3D Generation</a>
+    <a href="#specialist" class="specialist">Specialist Tools</a>
+    <a href="#cheatsheet" class="specialist">Quick Reference</a>
+  </nav>
+</header>
+
+<div class="search-wrap">
+  <label class="search-field">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input type="search" class="search-input" id="modelSearch" placeholder="filter — try 'logo', 'portrait', 'cheap', 'svg', 'text in images', 'enterprise'..." aria-label="Filter models by keyword">
+  </label>
+  <span class="search-count" id="searchCount"></span>
+</div>
+
+<div class="empty-state" id="emptyState">No models or cheat-sheet entries match that filter.</div>
+
+<!-- ─── GENERATION ─────────────────────────────────────── -->
+<section id="generation">
+  <div class="section-header">
+    <h2>Text-to-Image Generation</h2>
+    <span class="section-tag gen-tag">Core</span>
+  </div>
+  <p class="section-desc">Twenty-seven models that all claim to be "the latest." What actually differentiates them is which job working designers reach for them on — and which job they quietly avoid them on. Notes below pull from Reddit, Rival head-to-heads, ImageBattle, and hands-on reviewer testing.</p>
+
+  <div class="model-grid">
+
+    <div class="model-card">
+      <div class="name">Flux 2 Pro <span class="badge badge-best">production default</span></div>
+      <p class="desc">The photoreal API favorite — the model designers run by default for everything that isn't a final hero shot. Loses ~75% of Rival's blind head-to-heads to Flux 2 Max but costs 20% less, so most production teams use Pro for iteration and switch to Max only for the keeper. Reviewer consensus: best skin, lighting, and material realism among hosted APIs.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Starts misspelling small text once you ask for more than ~10 words on a poster; falls behind Imagen 4 on typography.
+        <strong>Pick over Imagen 4 when</strong>You want grit and material realism over Google's polished, "safe" aesthetic.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux 2 Max <span class="badge badge-best">hero shots</span></div>
+      <p class="desc">The "ships unedited to the client" tier. Wins 75% of Rival blind votes against Flux 2 Pro, with the gap widest on cinematic lighting, fabric/skin, and complex 4K backgrounds — the stuff that makes hero images feel like film stills, not renders. Costs 25% more per generation and takes longer; not for iteration.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Slow and pricey enough that it's overkill for anything but finals; multi-character scenes still drift.
+        <strong>Pick over Flux 2 Pro when</strong>This image ships unedited — portfolio piece, campaign keyart, fashion ad.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux 2 Flex</div>
+      <p class="desc">The under-discussed middle of the Flux 2 lineup — explicitly positioned for marketing teams running multi-asset campaigns rather than for hero generation. Accepts up to 8 reference images for character/product consistency across 50+ banner variants, which is the actual selling point. Most community attention skips Flex for Pro/Max above or Dev below.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Character identity can drift across long sequences; multi-character scenes still fragile.
+        <strong>Pick over Pro when</strong>You're producing 50 brand-consistent assets in one campaign, not one hero shot.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Fast <span class="badge badge-fast">throwaway tier</span></div>
+      <p class="desc">The Schnell-family 1–4-step speed tier. Three to five seconds per concept at near-zero cost — designers and indie game devs use it to throw 20–50 wild variants at a wall before picking one to finish in Pro/Max. Apache-2.0 licensed and runs on modest hardware. One product designer's pattern: "50 logo concepts in under 5 seconds each."</p>
+      <div class="when">
+        <strong>Weak spot</strong>Visible quality drop on faces, fine textures, and any scene with more than a couple of subjects.
+        <strong>Pick over Flux 2 Pro when</strong>You're exploring directions, not committing — the goal is volume and speed.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">NVIDIA Sana <span class="badge badge-fast">laptop GPU</span></div>
+      <p class="desc">An NVIDIA Research model engineered around efficiency — 20× smaller than Flux-12B and 100× faster in throughput. Generates 1024×1024 in under a second on a 16GB laptop GPU; 4096×4096 in under 16 seconds. The Sana-Sprint variant pushes a 1024px image in 0.1s on an H100 via one/few-step distillation. Open-source under NVIDIA's research repo, fully self-hostable.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Text-to-image only — no editing, ControlNet, or LoRA ecosystem; quality ceiling below Flux 2 Pro on photoreal hero work.
+        <strong>Pick over Flux Fast when</strong>You're self-hosting on a laptop or single-GPU box and need 4K output, not just speed.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Pro 1.1 Ultra <span class="badge badge-best">print-ready</span></div>
+      <p class="desc">The 4MP native specialist — generates 2048×2048 directly in ~10 seconds with no upscale step or artifacts. The only model in the Flux family that comfortably hands you a billboard-, magazine-, or large-format-poster-ready PNG straight out of the API. Raw Mode toggle strips the synthetic gloss for a more candid-photography aesthetic.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Pre-Flux-2 architecture: weaker prompt adherence, no multi-reference support, more text misspellings.
+        <strong>Pick over Flux 2 Pro when</strong>You need native 4MP output for print and don't need Flux 2's multi-reference or hex-color controls.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Pro 1.1</div>
+      <p class="desc">The original "Blueberry" model that put Flux on the map in late 2024 — still kept around for three real reasons in 2026: existing LoRA libraries that haven't been ported to Flux 2's 32B architecture, abstract/stylized work where Flux 2's compositional jump doesn't help, and budget-sensitive volume. Roughly 3x cheaper per image than Flux 2 Pro on most aggregators.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Faces, embedded text, and complex compositions are all materially behind Flux 2.
+        <strong>Pick over Flux 2 Pro when</strong>You have v1.x LoRAs to use, or you're doing non-photorealistic work where the upgrade buys nothing.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Dev Redux</div>
+      <p class="desc">Not a base generator — it's Flux Dev with the Redux style-transfer module bolted on. Feed it a reference image and it pulls that art style into new generations. ComfyUI community workflows pair it with Depth ControlNet for portraits, or Canny ControlNet for room/architecture restyling. r/StableDiffusion sentiment when it shipped: "finally consistent style transfer after half a year of mediocre IPAdapters."</p>
+      <div class="when">
+        <strong>Weak spot</strong>Setup-heavy: ComfyUI, a separate CLIP-vision model, custom workflow files. Not a one-click tool.
+        <strong>Pick over base Flux Dev when</strong>You want one image's <em>look</em> applied to a different subject — not just a similar prompt.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Mystic <span class="badge badge-best">portraits ★</span></div>
+      <p class="desc">Reddit's pick for editorial portraiture and lookbook work — in head-to-head portrait tests, Mystic V2 "was rated the most realistic by far," beating Flux 1.1 (slight skin plasticity) and Midjourney V6.1 (overly artificial). Built by the Magnific team specifically for human realism and pairs natively with Magnific's skin enhancer for finals.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Action poses, hands, and complex prop interactions — body morphing and missing fingers are recurring failure modes.
+        <strong>Pick over Flux 2 Pro when</strong>The face is the subject, not the scene.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Higgsfield Image (Soul)</div>
+      <p class="desc">The "Soul" image model from the Higgsfield team (Snapchat AI alums) — built specifically for cinematic photoreal portraits, with Soul ID locking facial structure across a series. One Pollo AI reviewer rated it 9/10: "doesn't have that glossy plasticky look most AI generators have… genuinely looks like a real person." Sits inside Higgsfield's pipeline so you can push the image straight into Sora / Kling / Seedance for video without re-exporting.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Quality is best on emotional close-ups and single-subject scenes; complex action and long sequences drift; $9/mo Basic plan only buys ~75 generations.
+        <strong>Pick over Mystic when</strong>The portrait is the first frame of a video, not a standalone still.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Imagen 4 <span class="badge badge-best">text in images</span></div>
+      <p class="desc">Google's text-in-image specialist. Hits ~95% accuracy on embedded type versus Flux 2's still-unreliable poster work — the model designers reach for when the image has to <em>say</em> something legible. Aesthetic is markedly more polished than Flux: cleaner light, less grit, less character. The default in Google Cloud / Vertex AI workflows.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Anatomy errors in complex scenes (one reviewer got "a lady with three hands"); faces still in uncanny valley; less creative on abstract work than Imagen 3.
+        <strong>Pick over Flux 2 Pro when</strong>The image has to render readable text — posters, ads, UI mockups, book covers, packaging.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Imagen 3</div>
+      <p class="desc">Worth keeping around even with Imagen 4 shipped. Scores higher on abstract/creative work in side-by-sides (8/10 vs Imagen 4's 6/10), uses a more forgiving short-prompt style, and runs ~50% cheaper. One reviewer flatly titled their writeup <em>"Imagen 4: Not as Good as Imagen 3"</em> for complex multi-subject scenes — the upgrade isn't universal.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Text rendering is the old ~70% — useless for posters; if text matters, jump to Imagen 4.
+        <strong>Pick over Imagen 4 when</strong>You're doing abstract/illustrative work, batch generation, or writing short, loose prompts.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Imagen 3 Fast <span class="badge badge-fast">batch tier</span></div>
+      <p class="desc">Google's iteration model — four images in under four seconds at ~$0.02 each. The hybrid pattern most teams settle into: Imagen 3 Fast for prompt tuning and concept exploration, Imagen 3 or 4 for finals. At 50,000+ images/month the cost savings compound fast.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Visible drop on lighting, shadow, bokeh, and fine texture versus full Imagen 3.
+        <strong>Pick over Imagen 3 when</strong>You're iterating prompts, not finalizing — or running high-volume batch jobs.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">ChatGPT Images 2.0 <span class="badge badge-new">conversational</span></div>
+      <p class="desc">OpenAI's GPT Image 2. Strongest model for conversational generation and editing — drop 2–10 reference images in a single call, describe how they relate, iterate by chatting. Beats Flux on native multi-image composition. Known asymmetry: the ChatGPT web UI runs a hidden prompt-expander plus post-processing, so raw API output looks materially worse than what users post from the chat interface ("nerfed overnight" is the recurring complaint on the OpenAI forums).</p>
+      <div class="when">
+        <strong>Weak spot</strong>Aspect ratios via API are limited (1:1, 3:2, 2:3); garbled embedded text despite OpenAI's marketing.
+        <strong>Pick over Flux 2 Pro when</strong>You want natural-language editing chains or native multi-image composition in a single call.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">GPT Image 1</div>
+      <p class="desc">OpenAI's original GPT-4o-based image model from March 2025 — the one that triggered the viral Studio Ghibli aesthetic wave. Lacks GPT Image 2's reasoning, web search, and multi-turn editing, but earns its place in production rotation as a stable baseline: more "neutral" output (won't auto-polish a rough sketch into something glossy), more predictable for bulk API workflows, and useful as an A/B against Image 2 before fully migrating.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Text rendering is the old broken kind — letters scramble on anything beyond a word or two; single-turn only, no conversation context.
+        <strong>Pick over GPT Image 2 when</strong>You want the Image 1 aesthetic, need neutral non-polished output, or are running a stable bulk pipeline you don't want to migrate yet.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">DALL-E 3 <span class="badge badge-free">sunset path</span></div>
+      <p class="desc">On its way out — OpenAI deprecated DALL-E 3 from the ChatGPT UI in late 2025 and shut the API on May 12, 2026. Three live niches keep it in this guide: free generation via Microsoft Copilot (25/day, no upgrade needed), literal-prompt control for production pipelines that can't tolerate creative reinterpretation, and the same "neutral output" upside as GPT Image 1 — it won't auto-glossify a deliberately rough brief.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Misspells embedded text ("Sumnner Sal 50% Of" is the canonical example); regenerates the whole image on edits instead of preserving the rest; quality clearly behind Flux 2 / Imagen 4.
+        <strong>Pick over GPT Image 2 when</strong>You need literal prompt adherence without GPT's auto-polish, or you're using it free through Copilot.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Ideogram V3 <span class="badge badge-best">typography ★</span></div>
+      <p class="desc">If the image needs readable type, this is the answer. One designer who ran 3,000+ images reports it "solved" the text-rendering problem that breaks every other model. The unlock is the separate "Text to include" field — put exact strings there, not in the prompt body, and accuracy jumps from ~70% across the field to the high 90s on short copy. The pick for posters, social cards, T-shirts, and YouTube thumbnails.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Faces drift between generations; long body copy and multi-line layouts still fail; not photoreal.
+        <strong>Pick over Flux 2 Pro / Imagen 4 when</strong>Text legibility is the binding constraint, not photorealism.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Reve V4 <span class="badge badge-new">prompt adherence ★</span></div>
+      <p class="desc">Came out of nowhere in March 2025 and instantly hit #1 on Artificial Analysis's leaderboard for prompt adherence — Curious Refuge called it "one of the most obedient models we've ever tested." Three things no peer matches: planning-first generation (it reasons about composition before rendering), multimodal output (4 visual directions from one prompt to pick from), and four explicit variants — raster up to 2K plus native editable SVG via the V4 Vector tier.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Struggles with transparent materials (wine glass tests fail), specific fictional characters (game/show IPs come out generic), and complex multi-object compositions.
+        <strong>Pick over Recraft V4 when</strong>You need raster <em>and</em> SVG from one model, or want side-by-side multimodal variants from a single prompt.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Ideogram V3 Character</div>
+      <p class="desc">One reference photo → consistent character across pose, outfit, lighting, and scene — no LoRA training, no 10–30-image dataset. In Rival's 16-challenge head-to-head it ties dead-even with Nano Banana 2; reviewers split it as Ideogram wins on <em>identity</em> (same face), Nano Banana wins on <em>scene logic</em> (same lighting and proportions).</p>
+      <div class="when">
+        <strong>Weak spot</strong>Drift over long sessions; lower max resolution than base V3.
+        <strong>Pick over a Flux LoRA when</strong>You have one good reference photo and don't want to assemble a dataset and train a model.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">NVIDIA Consistory</div>
+      <p class="desc">An NVIDIA Research approach that delivers character consistency <em>without any training or fine-tuning</em> — it shares internal model activations across a generation series instead of injecting a learned identity. Compatible with ControlNet; first method to extend training-free consistency to multi-subject scenes. Worth flagging: NVIDIA's hosted demo now warns users to "transition to another model to avoid service interruption" — read as soft sunset.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Backgrounds can bleed between images when masks are imperfect; style misalignment when shared hidden states encode both semantic and visual features; hosted service flagged for wind-down.
+        <strong>Pick over Ideogram V3 Character when</strong>You specifically need multi-subject training-free consistency — but verify the hosted endpoint is still live before building on it.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Recraft V4 <span class="badge badge-best">brand systems ★</span></div>
+      <p class="desc">The model designers use when "shipped, on-brand" matters more than "wow, what an image." Brand Style Lock takes 5–10 reference images and stamps that visual language across hundreds of outputs — Chatfuel's senior designer used it to ship 80+ on-brand 3D Play-Doh-style assets in weeks. Generates real editable SVGs (clean Bezier paths, opens in Figma/Illustrator), not raster-pretending-to-be-vector. Topped HuggingFace's text-to-image leaderboard at V3 and again at V4.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Editorial bias — outputs lean "fashion campaign," which feels constraining when you want stock-neutral or weird-and-creative. Not for raw photorealism.
+        <strong>Pick over Flux 2 Pro when</strong>The deliverable is brand assets, logos, illustrations, or icons — not a photograph.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Seedream V4</div>
+      <p class="desc">ByteDance's poster-and-brand-layout model. Designer-level composition with cinematic color grading and filmic grain — handles small text down to 8–12pt, Chinese characters, and complex multi-line layouts with "vector-grade kerning" per fal.ai's V4.5 review. Purpose-built for what Canva users actually want: clean hierarchy, readable typography, polished commercial finish, 4K native output.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Aesthetic skews plasticky and commercial — not the pick for experimental or fine-art work; complex curved text still trips it up.
+        <strong>Pick over Ideogram V3 when</strong>You need legible typography <em>plus</em> full cinematic art direction (color grading, lighting, composition) — not just clean text on a flat layout.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Recraft V3</div>
+      <p class="desc">Recraft's pre-rebuild flagship — still the broader-purpose recommendation in Recraft's own docs. Two things V3 does that V4 doesn't crisply replace: precise <em>positional</em> text placement (V4 sharpened text quality but dropped that control), and a less opinionated "design taste" — easier when you want stock-neutral output instead of V4's editorial flair.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Lower default resolution (1024 vs V4 Pro's 2048); behind V4 on lighting realism and material rendering.
+        <strong>Pick over Recraft V4 when</strong>You need text placed at an exact location, or V4's editorial bias is wrong for the brief.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Stable Diffusion 3.5</div>
+      <p class="desc">Still the answer when "open weights" is a hard requirement — self-hosting, on-prem deploys, custom fine-tunes you fully control. Community license is free up to $1M ARR. The honest 2026 read from comparison guides: <em>"awkward middle ground — more VRAM than SDXL, less quality than Flux, minimal community."</em> Survives mostly on its dreamlike artistic flair and the licensing story, not raw quality.</p>
+      <div class="when">
+        <strong>Weak spot</strong>18GB VRAM with no widely-used quantization; LoRA/ControlNet ecosystem is materially thinner than Flux's.
+        <strong>Pick over Flux Dev when</strong>You need a self-hostable open-weight base with a commercial-friendly community license.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Luma Photon</div>
+      <p class="desc">Photoreal generation at fast-tier prices — Photon at ~$0.015/1080p image, Flash variant at $0.004, 4–7× cheaper than Flux at scale. 4MP native. Built on the same architecture as Luma's Ray video models, so outputs feed cleanly into Luma's video pipeline as starting frames. Single-reference character consistency lets you lock a face across a storytelling sequence without LoRA training.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Text rendering is notably weak — letters garble even on simple prompts; character drift accumulates over long sequences.
+        <strong>Pick over Flux 2 Pro when</strong>Generating at very high volume on a budget, or the image is the starting frame for a Luma video.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Minimax Image 01</div>
+      <p class="desc">A specialist hiding behind a generalist label. Dominates ImageBattle's Architecture &amp; Interiors category — handles reflections, glass, structural beams, and sub-surface skin scattering exceptionally well. Outputs have a built-in gloss / 3D-render aesthetic that flatters product mockups and modern interior viz.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Forces that high-gloss 3D look on everything — actively bad at flat 2D, anime, or Ghibli-style work; English-language docs are thin.
+        <strong>Pick over Flux 2 Pro when</strong>Rendering interiors, glossy product hero shots, or anything that benefits from the "3D toy" aesthetic.
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Bria <span class="badge badge-free">IP-clean</span></div>
+      <p class="desc">The legally-safe choice — trained exclusively on licensed data from Getty, Shutterstock, Alamy, and Envato, with contractual IP indemnification on every output. SOC 2, ISO 27001, GDPR, and EU AI Act compliant; deploys on-prem or fully air-gapped. Used by enterprises where "where did this training data come from?" is a procurement question, not a curiosity.</p>
+      <div class="when">
+        <strong>Weak spot</strong>Aesthetic ceiling is lower than web-scraped models — the licensed dataset is narrower than the open web, and reviewers acknowledge the gap.
+        <strong>Pick over Flux / Imagen / ChatGPT when</strong>Legal indemnification is the binding constraint, not image quality.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── EDITING ─────────────────────────────────────── -->
+<section id="editing">
+  <div class="section-header">
+    <h2>Image Editing &amp; Compositing</h2>
+    <span class="section-tag edit-tag">Edit</span>
+  </div>
+  <p class="section-desc">These models take an existing image and modify it — changing elements, swapping backgrounds, inpainting regions, or applying text-guided transformations. The quality bar here is different: it's about consistency and faithfulness to the original, not raw generation quality.</p>
+
+  <div class="model-grid">
+
+    <div class="model-card">
+      <div class="name">Flux Kontext <span class="badge badge-best">editing ★</span></div>
+      <p class="desc">The most-discussed image editing model of 2025. Pixel-level local editing — change a car's color, swap text, replace objects — while maintaining everything else. ~3 second generation, 6x faster than diffusion-based alternatives. Strong context preservation.</p>
+      <div class="when"><strong>Choose when</strong>Targeted local edits, product photo variations, text replacement in images. Your go-to editing model.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Kontext Multi Image</div>
+      <p class="desc">Extends Flux Kontext to accept multiple reference images. Enables style transfer from one image to a scene, or placing consistent subjects into new environments.</p>
+      <div class="when"><strong>Choose when</strong>You have multiple reference images to blend or need to keep a character/product consistent.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Kontext LoRA</div>
+      <p class="desc">Flux Kontext with LoRA fine-tune support. Lets you customize the editing model for specific subjects, styles, or brand assets by training on a small image set.</p>
+      <div class="when"><strong>Choose when</strong>Repetitive editing workflows with consistent brand/product; personalized model behavior.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Nano Banana / Nano Banana 2 / Nano Banana Pro</div>
+      <p class="desc">Google Gemini 2.5 Flash image capability — text-guided editing with natural language understanding. Very flexible and "conversational" — you can chain edits like text instructions. Nano Banana Pro adds quality; Nano Banana 2 adds speed improvements.</p>
+      <div class="when"><strong>Choose when</strong>Complex multi-step edits described in natural language; creative flexibility over pixel-precise control.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">ChatGPT Images 2.0 Edit <span class="badge badge-new">new</span></div>
+      <p class="desc">OpenAI's image editing model. Instruction-following editing using the GPT Image architecture. Strong for coherent edits that make "logical" sense in context.</p>
+      <div class="when"><strong>Choose when</strong>You want reliable, instruction-driven edits with a polished output aesthetic.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Seedream V4.5 Edit / V5 Edit</div>
+      <p class="desc">ByteDance's editing models (Seedream family). Excellent for instruction following and content preservation — faithful to the original image. V5 improves on instruction adherence with reward-based optimization.</p>
+      <div class="when"><strong>Choose when</strong>You need faithful edits that preserve the original image closely while applying targeted changes.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Qwen Image Edit Plus / 2511</div>
+      <p class="desc">Alibaba's Qwen editing model. Best for precise text edits within images and supports chained multi-step operations (e.g. "change the background, then update the text"). Top performer for Chinese text editing.</p>
+      <div class="when"><strong>Choose when</strong>Targeted text replacement, chained operations, multilingual image editing.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Qwen Edit Multiangle</div>
+      <p class="desc">A Qwen variant supporting multi-angle or multi-reference editing scenarios. Useful for editing product imagery across different views consistently.</p>
+      <div class="when"><strong>Choose when</strong>Product photography across angles; multi-view consistency edits.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Runway Gen-4 Image</div>
+      <p class="desc">Runway's image generation/editing model, closely tied to their video pipeline. Useful for generating frames consistent with cinematic style, or creating starting images for video generation workflows.</p>
+      <div class="when"><strong>Choose when</strong>Your workflow feeds into video generation; cinematic and motion-ready imagery.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Wan 2.7</div>
+      <p class="desc">An open-source model (originally a video model) with image editing capability. Known for consistent character rendering and strong motion-aware editing.</p>
+      <div class="when"><strong>Choose when</strong>Character-driven edits, open-source workflow requirements.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Fill Pro</div>
+      <p class="desc">Inpainting specialist from the Flux family. Fill or replace masked regions while preserving surrounding context. More controlled than general Flux Kontext.</p>
+      <div class="when"><strong>Choose when</strong>Removing objects, filling in gaps, replacing specific masked regions cleanly.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux 2 Inpaint [Klein 9B]</div>
+      <p class="desc">Flux 2-based inpainting using the Klein 9B model. Strong quality for masked region fills within Flux 2's photorealism range.</p>
+      <div class="when"><strong>Choose when</strong>High-quality inpainting within a photorealistic image; pairs well with Flux 2 source images.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Dev LoRA / Flux Dev LoRA Inpaint</div>
+      <p class="desc">Open Flux Dev with LoRA fine-tuning, plus an inpainting variant. Powerful for custom-trained editing workflows. The inpaint version allows masked region fill using a LoRA-customized model.</p>
+      <div class="when"><strong>Choose when</strong>You need a customized inpainting model trained on specific subjects or brand assets.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux Pro Outpaint / SD3 Outpaint</div>
+      <p class="desc">Extend images beyond their original canvas — useful for adding background, making portrait images landscape, or expanding compositions. Flux Pro Outpaint is higher quality; SD3 version is more flexible/experimental.</p>
+      <div class="when"><strong>Choose when</strong>Extending a crop, adapting an image to a different aspect ratio, adding more scene.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">SD3 Inpaint</div>
+      <p class="desc">Stable Diffusion 3's inpainting model. Solid quality with the flexibility of the open-weights SD3 ecosystem.</p>
+      <div class="when"><strong>Choose when</strong>SD3 is your base model of choice and you need masked fill.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Bria Inpaint / Bria Content-Aware Fill</div>
+      <p class="desc">Bria's inpainting and fill tools. Same licensing advantage as Bria's generator — commercially clean, safe for enterprise use. Content-aware fill intelligently fills based on surrounding pixels.</p>
+      <div class="when"><strong>Choose when</strong>Client work with IP concerns; enterprise projects needing legally clean provenance.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">SD3 Remove Background / SD3 Content-Aware Fill</div>
+      <p class="desc">Stable Diffusion 3 utility tools. Background removal extracts subjects; content-aware fill intelligently replaces removed areas using scene context.</p>
+      <div class="when"><strong>Choose when</strong>Quick background removal and fill within an SD3-based workflow.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Replace Background / Bria Replace Background</div>
+      <p class="desc">Dedicated background replacement. Extracts subject, replaces background based on prompt. Bria version has the clean licensing. Generic version uses a community model.</p>
+      <div class="when"><strong>Choose when</strong>Product photography swaps, portrait background changes, e-commerce imagery.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Relight 2.0</div>
+      <p class="desc">Re-lights an existing image with new lighting conditions. Change warm to cool light, add dramatic shadows, simulate golden hour, etc. Niche but irreplaceable for product/portrait work.</p>
+      <div class="when"><strong>Choose when</strong>Product photography with inconsistent lighting; adapting an image to a new environment's lighting mood.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Image To Image</div>
+      <p class="desc">Classic img2img — use an existing image as a "seed" that the model transforms according to a new prompt, with adjustable strength. The foundational image editing workflow from early diffusion models.</p>
+      <div class="when"><strong>Choose when</strong>Style transfer, rough-to-refined transformations, using a sketch as a starting point.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Sketch to Image</div>
+      <p class="desc">Converts rough sketches or line art into rendered images. Preserves the composition and structure of your sketch while applying realistic or stylized rendering.</p>
+      <div class="when"><strong>Choose when</strong>Design ideation — go from napkin sketch to visual in seconds.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux ControlNet &amp; LoRA</div>
+      <p class="desc">Flux with ControlNet for structural guidance (edges, depth, pose) plus LoRA customization. Gives you precise compositional control over generated images.</p>
+      <div class="when"><strong>Choose when</strong>You need exact control over pose, composition, or structural elements in the output.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Stable Diffusion ControlNets</div>
+      <p class="desc">SD's ControlNet suite — the original implementation. Wide ecosystem of edge/pose/depth/normal map guidance. More mature tooling and community resources than Flux ControlNet.</p>
+      <div class="when"><strong>Choose when</strong>You need precise structural guidance and prefer the mature SD ControlNet ecosystem.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Kolors Virtual Try On</div>
+      <p class="desc">Specialist model for garment/product try-on — overlays clothing or accessories onto a person or mannequin image. Built for fashion/e-commerce.</p>
+      <div class="when"><strong>Choose when</strong>Fashion e-commerce, apparel visualization, clothing design presentation.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── VECTOR ─────────────────────────────────────── -->
+<section id="vector">
+  <div class="section-header">
+    <h2>Vector &amp; SVG</h2>
+    <span class="section-tag vector-tag">Vector</span>
+  </div>
+  <p class="section-desc">This is where Recraft dominates almost completely. True SVG output (not just a raster image pretending to be a vector) is rare — only a handful of models actually do it.</p>
+
+  <div class="model-grid">
+
+    <div class="model-card">
+      <div class="name">Recraft V3 SVG <span class="badge badge-best">vector ★</span></div>
+      <p class="desc">Generates actual SVG vector files from prompts. #1 on HuggingFace for logo/icon generation. Clean paths, scalable output. The only model most designers trust for real vector work.</p>
+      <div class="when"><strong>Choose when</strong>Logos, icons, illustrations that need to scale. Any deliverable that goes into Figma/Illustrator as a vector.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Recraft Vectorizer</div>
+      <p class="desc">Converts raster images (PNG/JPG) to SVG vector. Takes any image and traces/converts it. Useful for taking a raster AI output and making it infinitely scalable.</p>
+      <div class="when"><strong>Choose when</strong>You have a raster image that needs to become a vector — logo cleanup, icon sets, illustration for print.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Recraft Crisp Upscale</div>
+      <p class="desc">Recraft's upscaling model tuned for crisp, clean graphic outputs rather than photographic detail. Better for flat illustration and design work than photography-optimized upscalers.</p>
+      <div class="when"><strong>Choose when</strong>Upscaling illustrations, flat design, icons, or any non-photographic imagery.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Text To Vector</div>
+      <p class="desc">Another text-to-SVG tool focused on typographic and decorative vector generation. Useful for ornamental design, monograms, and text-based vector artwork.</p>
+      <div class="when"><strong>Choose when</strong>Type-based vector art, decorative lettering, ornamental design elements.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── UPSCALING ─────────────────────────────────────── -->
+<section id="upscale">
+  <div class="section-header">
+    <h2>Upscaling &amp; Enhancement</h2>
+    <span class="section-tag upscale-tag">Upscale</span>
+  </div>
+  <p class="section-desc">Takes low-res images and makes them larger — but the good ones don't just resize, they add real detail (hallucinate plausible texture). Huge for print production, finishing AI outputs for client delivery, and rescuing old photos.</p>
+
+  <div class="model-grid">
+
+    <div class="model-card">
+      <div class="name">Topaz Image Upscale <span class="badge badge-best">photo ★</span></div>
+      <p class="desc">Topaz Gigapixel — the professional photography standard for upscaling. Deep learning that genuinely adds detail. Particularly strong for photographic images, faces, and fine textures. Desktop-grade quality in a cloud tool.</p>
+      <div class="when"><strong>Choose when</strong>Photography, portraits, realistic imagery where you need maximum photographic fidelity.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Topaz Sharpen</div>
+      <p class="desc">Topaz's dedicated sharpening model. Recovers detail from soft or motion-blurred images. Different from upscaling — it enhances clarity at the current resolution.</p>
+      <div class="when"><strong>Choose when</strong>Blurry source images, adding punch to soft AI outputs before delivery.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Magnific Upscale <span class="badge badge-best">AI art ★</span></div>
+      <p class="desc">Magnific is the gold standard for upscaling AI-generated images specifically. Understands and preserves the aesthetic of AI art. Supports up to 16x with adjustable HDR, Resemblance, and Creativity sliders. Also bundles the Mystic generator.</p>
+      <div class="when"><strong>Choose when</strong>Finishing AI-generated images for high-resolution delivery. Illustrations, concept art, AI portraits.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Magnific Skin Enhancer</div>
+      <p class="desc">A Magnific mode focused specifically on realistic skin — adds pore detail, texture, and lifelike quality to portraits. Essential for beauty/fashion retouching of AI images.</p>
+      <div class="when"><strong>Choose when</strong>Portraits and people imagery where skin needs to look genuinely photographic.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Magnific Precision… (×2)</div>
+      <p class="desc">Magnific's precision upscaling modes — likely different preset configurations (e.g. Precision Photo vs Precision Illustration) optimizing for different source material types.</p>
+      <div class="when"><strong>Choose when</strong>You know your output type (photo vs illustration) and want optimized upscaling for that category.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Enhancor Image Upscale / Realistic Skin</div>
+      <p class="desc">Enhancor is another upscaling tool with a dedicated skin enhancement mode. Similar positioning to Magnific's skin tools, worth comparing outputs side-by-side for specific subjects.</p>
+      <div class="when"><strong>Choose when</strong>Testing as an alternative to Magnific for portrait enhancement; different aesthetic preferences.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── 3D ─────────────────────────────────────── -->
+<section id="3d">
+  <div class="section-header">
+    <h2>3D Generation</h2>
+    <span class="section-tag threed-tag">3D</span>
+  </div>
+  <p class="section-desc">Generate 3D models from images or text. This is the newest and most rapidly evolving category — outputs range from quick mesh references to production-quality 3D assets.</p>
+
+  <div class="model-grid">
+
+    <div class="model-card">
+      <div class="name">Meshy V6 <span class="badge badge-best">3D ★</span></div>
+      <p class="desc">One of the leading text-to-3D and image-to-3D models. Generates textured meshes suitable for game assets, product renders, and design references. Strong on organic shapes and characters.</p>
+      <div class="when"><strong>Choose when</strong>Game/product 3D assets, quick mesh generation from concept imagery.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Rodin V2 / Rodin</div>
+      <p class="desc">Deemos' Rodin — well-regarded for high-fidelity character and object 3D generation. V2 improves detail and topology. Often used for character design, figurines, and product visualization.</p>
+      <div class="when"><strong>Choose when</strong>High-quality character 3D models, detailed product visualization, figurine design.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Hunyuan 3D V2.1</div>
+      <p class="desc">Tencent's 3D generation model. Strong quality for architectural and product shapes. Competitive with Meshy and Rodin for clean geometric objects.</p>
+      <div class="when"><strong>Choose when</strong>Architecture, industrial design, geometric product forms.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Trellis 3D V2 / Trellis</div>
+      <p class="desc">Microsoft Research's 3D generation model. Uses a structured latent space for consistent 3D outputs. Strong for multi-view consistent mesh generation from a single image.</p>
+      <div class="when"><strong>Choose when</strong>Single-image to 3D, consistency across views matters, exploratory 3D workflows.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">SAM 3D – Objects</div>
+      <p class="desc">Based on Meta's Segment Anything Model (SAM), adapted for 3D object segmentation and extraction. Identifies and isolates objects in 3D space.</p>
+      <div class="when"><strong>Choose when</strong>Extracting specific objects for 3D use, augmented reality object isolation.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── SPECIALIST ─────────────────────────────────────── -->
+<section id="specialist">
+  <div class="section-header">
+    <h2>Specialist &amp; LoRA Tools</h2>
+    <span class="section-tag specialist-tag">Specialist</span>
+  </div>
+  <p class="section-desc">These are tools with very specific functions, or customization layers (LoRA) that let you personalize a base model with a small set of training images.</p>
+
+  <div class="model-grid">
+
+    <div class="model-card">
+      <div class="name">Flux 2 Dev LoRA / Flux Dev LoRA</div>
+      <p class="desc">LoRA fine-tuning on Flux Dev. Train the model on 10–30 images of a subject, product, or style, and it generates that subject reliably. The primary customization path for Flux.</p>
+      <div class="when"><strong>Choose when</strong>Brand characters, specific products, consistent people, custom illustration styles.</div>
+    </div>
+
+    <div class="model-card">
+      <div class="name">Flux 2 Pro LoRA</div>
+      <p class="desc">LoRA on the Pro-quality Flux 2 base. Higher-quality outputs than Dev LoRA at the cost of more compute. Use when you need custom subjects AND the best generation quality.</p>
+      <div class="when"><strong>Choose when</strong>High-quality client work with brand or character consistency requirements.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── CHEAT SHEET ─────────────────────────────────────── -->
+<div class="cheat-sheet" id="cheatsheet">
+  <h2>Quick Reference: What to Use When</h2>
+
+  <div class="cheat-row">
+    <span class="task">Best all-round image quality</span>
+    <span class="answer"><code>Flux 2 Pro</code> or <code>Recraft V4</code> — neck and neck at the top of leaderboards</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Text in images (logos, banners)</span>
+    <span class="answer"><code>Ideogram V3</code> — ~90% text accuracy, unmatched for typographic imagery</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Vector / SVG output</span>
+    <span class="answer"><code>Recraft V3 SVG</code> — the only model that outputs real scalable vector files</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Photorealistic people / portraits</span>
+    <span class="answer"><code>Mystic</code> or <code>Imagen 4</code> — Mystic for skin quality, Imagen 4 for overall polish</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Brand assets / style control</span>
+    <span class="answer"><code>Recraft V4</code> — built-in style palette controls are unique to Recraft</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Fast, cheap concept exploration</span>
+    <span class="answer"><code>Flux Fast</code> or <code>Imagen 3 Fast</code> — iterate freely before committing</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Targeted local image edits</span>
+    <span class="answer"><code>Flux Kontext</code> — pixel-precise, fast, best context preservation</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Natural language editing (chained)</span>
+    <span class="answer"><code>Nano Banana Pro</code> — conversational, creative, multi-step edits</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Upscaling photography</span>
+    <span class="answer"><code>Topaz Image Upscale</code> — the professional photography standard</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Upscaling AI-generated art</span>
+    <span class="answer"><code>Magnific Upscale</code> — purpose-built for AI art aesthetics, up to 16x</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">3D model generation</span>
+    <span class="answer"><code>Meshy V6</code> for characters/organics, <code>Rodin V2</code> for high-fidelity figures</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Custom subject / brand consistency</span>
+    <span class="answer"><code>Flux 2 Dev LoRA</code> for speed, <code>Flux 2 Pro LoRA</code> for quality</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Legally clean (commercial IP)</span>
+    <span class="answer"><code>Bria</code> — licensed training data, safest for enterprise client deliverables</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Fashion / virtual try-on</span>
+    <span class="answer"><code>Kolors Virtual Try On</code> — specialist model for garment visualization</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">From sketch to render</span>
+    <span class="answer"><code>Sketch to Image</code> or <code>Flux ControlNet &amp; LoRA</code> for compositional control</span>
+  </div>
+  <div class="cheat-row">
+    <span class="task">Extending a crop / outpainting</span>
+    <span class="answer"><code>Flux Pro Outpaint</code> — best quality; SD3 Outpaint as fallback</span>
+  </div>
+</div>
+
+<footer>
+  Generated June 2026 · Based on public benchmark data, ELO leaderboards, and design industry consensus · Models and rankings evolve rapidly
+</footer>
+
+<script>
+// Inject company logos into each card name. Uses Google's favicon service so we
+// don't host or hotlink anything. Two-pass match: model-name keys first (more
+// specific), company-name keys as a fallback against the full card text. Order
+// within each list matters — longer/more specific keys go before shorter ones
+// that could substring-match them.
+(function () {
+  // Pass 1: matched against the card's .name text.
+  const modelKeys = [
+    ['Nano Banana',      'google.com'],
+    ['Stable Diffusion', 'stability.ai'],
+    ['ChatGPT',          'openai.com'],
+    ['GPT Image',        'openai.com'],
+    ['DALL-E',           'openai.com'],
+    ['Imagen',           'google.com'],
+    ['Flux',             'bfl.ai'],
+    ['NVIDIA',           'nvidia.com'],
+    ['SAM 3D',           'ai.meta.com'],
+    ['Mystic',           'magnific.ai'],
+    ['Higgsfield',       'higgsfield.ai'],
+    ['Ideogram',         'ideogram.ai'],
+    ['Reve',             'reve.com'],
+    ['Recraft',          'recraft.ai'],
+    ['Seedream',         'seed.bytedance.com'],
+    ['SD3',              'stability.ai'],
+    ['Luma',             'lumalabs.ai'],
+    ['Minimax',          'minimaxi.com'],
+    ['Bria',             'bria.ai'],
+    ['Qwen',             'qwen.ai'],
+    ['Runway',           'runwayml.com'],
+    ['Wan ',             'wan.video'],
+    ['Topaz',            'topazlabs.com'],
+    ['Magnific',         'magnific.ai'],
+    ['Enhancor',         'enhancor.ai'],
+    ['Meshy',            'meshy.ai'],
+    ['Rodin',            'hyper3d.ai'],
+    ['Hunyuan',          'tencent.com'],
+    ['Trellis',          'microsoft.com'],
+    ['Kolors',           'kuaishou.com'],
+    // Figma-native utility nodes (no third-party vendor)
+    ['Relight',          'figma.com'],
+    ['Image To Image',   'figma.com'],
+    ['Sketch to Image',  'figma.com'],
+    ['Text To Vector',   'figma.com'],
+  ];
+
+  // Pass 2: matched against the full card text (name + description) when
+  // pass 1 misses. Used to catch parent companies mentioned in prose, e.g.
+  // "Trellis" → "Microsoft Research", "Rodin" → "Deemos", etc.
+  const companyKeys = [
+    ['Black Forest Labs', 'bfl.ai'],
+    ['Microsoft',         'microsoft.com'],
+    ['Tencent',           'tencent.com'],
+    ['ByteDance',         'seed.bytedance.com'],
+    ['Magnific',          'magnific.ai'],
+    ['Stability',         'stability.ai'],
+    ['Alibaba',           'wan.video'],
+    ['Deemos',            'hyper3d.ai'],
+    ['Kuaishou',          'kuaishou.com'],
+    ['NVIDIA',            'nvidia.com'],
+    ['Meta',              'ai.meta.com'],
+    ['Google',            'google.com'],
+    ['OpenAI',            'openai.com'],
+  ];
+
+  document.querySelectorAll('.model-card').forEach(card => {
+    const nameEl = card.querySelector('.name');
+    if (!nameEl || nameEl.querySelector('.logo')) return;
+
+    const nameText = nameEl.textContent;
+    const descText = card.querySelector('.desc')?.textContent || '';
+
+    let match = modelKeys.find(([key]) => nameText.includes(key));
+    if (!match) match = companyKeys.find(([key]) => nameText.includes(key) || descText.includes(key));
+    if (!match) return;
+
+    const img = document.createElement('img');
+    img.className = 'logo';
+    img.alt = '';
+    img.loading = 'lazy';
+    img.width = 18;
+    img.height = 18;
+    img.src = 'https://www.google.com/s2/favicons?domain=' + match[1] + '&sz=64';
+    img.onerror = function () { this.style.display = 'none'; };
+    nameEl.prepend(img);
+  });
+})();
+
+(function () {
+  const input = document.getElementById('modelSearch');
+  const countEl = document.getElementById('searchCount');
+  const emptyEl = document.getElementById('emptyState');
+  const cheatSheet = document.getElementById('cheatsheet');
+
+  const cards = Array.from(document.querySelectorAll('.model-card'));
+  const sections = Array.from(document.querySelectorAll('section'));
+  const cheatRows = Array.from(document.querySelectorAll('.cheat-row'));
+
+  // Precompute searchable text per card (card content + parent section heading)
+  const cardIndex = cards.map(card => {
+    const section = card.closest('section');
+    const sectionText = section ? (section.querySelector('.section-header')?.textContent || '') : '';
+    return { el: card, text: (card.textContent + ' ' + sectionText).toLowerCase() };
+  });
+  const cheatIndex = cheatRows.map(row => ({ el: row, text: row.textContent.toLowerCase() }));
+
+  function apply(query) {
+    const q = query.trim().toLowerCase();
+    const terms = q ? q.split(/\s+/).filter(Boolean) : [];
+    const matches = (text) => terms.every(t => text.includes(t));
+
+    let cardMatches = 0;
+    cardIndex.forEach(({ el, text }) => {
+      const ok = !terms.length || matches(text);
+      el.style.display = ok ? '' : 'none';
+      if (ok) cardMatches++;
+    });
+
+    // Hide sections (and their headers) when no cards in them match
+    sections.forEach(sec => {
+      const sectionCards = cardIndex.filter(c => sec.contains(c.el));
+      if (!sectionCards.length) return; // section without cards (none currently, but safe)
+      const anyVisible = sectionCards.some(c => c.el.style.display !== 'none');
+      sec.style.display = (!terms.length || anyVisible) ? '' : 'none';
+    });
+
+    // Filter cheat-sheet rows; hide the whole cheat sheet if it goes empty
+    let cheatMatches = 0;
+    cheatIndex.forEach(({ el, text }) => {
+      const ok = !terms.length || matches(text);
+      el.style.display = ok ? '' : 'none';
+      if (ok) cheatMatches++;
+    });
+    if (cheatSheet) {
+      cheatSheet.style.display = (!terms.length || cheatMatches > 0) ? '' : 'none';
+    }
+
+    // Update count + empty state
+    if (terms.length) {
+      const total = cardMatches + cheatMatches;
+      countEl.textContent = total + ' match' + (total === 1 ? '' : 'es');
+      emptyEl.classList.toggle('is-visible', total === 0);
+    } else {
+      countEl.textContent = '';
+      emptyEl.classList.remove('is-visible');
+    }
+  }
+
+  input.addEventListener('input', e => apply(e.target.value));
+
+  // Keyboard niceties: "/" focuses, Escape clears
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== input) {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    } else if (e.key === 'Escape' && document.activeElement === input) {
+      input.value = '';
+      apply('');
+      input.blur();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
