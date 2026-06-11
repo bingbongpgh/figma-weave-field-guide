@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OG Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #0e0e10;
+    color: #e8e8ec;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    padding: 72px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(74,158,255,0.10), transparent 45%),
+      radial-gradient(circle at 10% 95%, rgba(167,139,250,0.10), transparent 45%);
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #7a7a88;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 104px;
+    line-height: 1.02;
+    color: #fff;
+    margin-top: 24px;
+    letter-spacing: -0.01em;
+  }
+  h1 em {
+    font-style: italic;
+    color: #7a7a88;
+  }
+  .intro {
+    font-size: 22px;
+    color: #b5b5c0;
+    max-width: 780px;
+    line-height: 1.5;
+    margin-top: 28px;
+  }
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid;
+  }
+  .gen      { background: rgba(74,158,255,0.12);  color: #4a9eff; border-color: rgba(74,158,255,0.30); }
+  .edit     { background: rgba(167,139,250,0.12); color: #a78bfa; border-color: rgba(167,139,250,0.30); }
+  .vector   { background: rgba(52,211,153,0.12);  color: #34d399; border-color: rgba(52,211,153,0.30); }
+  .upscale  { background: rgba(251,146,60,0.12);  color: #fb923c; border-color: rgba(251,146,60,0.30); }
+  .threed   { background: rgba(244,114,182,0.12); color: #f472b6; border-color: rgba(244,114,182,0.30); }
+  .spec     { background: rgba(250,204,21,0.12);  color: #facc15; border-color: rgba(250,204,21,0.30); }
+
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: #7a7a88;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div>
+    <p class="eyebrow">Figma Weave · Reference Guide</p>
+    <h1>Image Model<br><em>Field Guide</em></h1>
+    <p class="intro">Every model available in Figma Weave — what each one does, when to reach for it, and how designers actually think about the landscape.</p>
+  </div>
+  <div class="footer-row">
+    <div class="pills">
+      <span class="pill gen">Generation</span>
+      <span class="pill edit">Editing</span>
+      <span class="pill vector">Vector</span>
+      <span class="pill upscale">Upscale</span>
+      <span class="pill threed">3D</span>
+      <span class="pill spec">Specialist</span>
+    </div>
+    <span>bingbongpgh.github.io</span>
+  </div>
+</body>
+</html>
